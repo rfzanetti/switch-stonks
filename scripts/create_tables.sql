@@ -13,8 +13,7 @@ CREATE TABLE game (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                    name VARCHAR(100) NOT NULL);
 
 CREATE TABLE price (id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, 
-                    name VARCHAR(25) NOT NULL,
-                    price DOUBLE, 
+                    value DOUBLE, 
                     timestamp BIGINT,
                     game_id INT,
                     FOREIGN KEY (game_id) REFERENCES game(id),
