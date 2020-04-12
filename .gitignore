@@ -6,3 +6,7 @@ venv/
 
 # Pycache files
 __pycache__/
+*.pyc
+
+# SQLite DB files
+*.db
