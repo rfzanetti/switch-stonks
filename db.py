@@ -22,7 +22,7 @@ class DbUtil():
     def store_listing(self, listing):
         listing.save()
 
-    def update_currency(self, currency_code, new_rate):
+    def update_currency_usd_conversion_rate(self, currency_code, new_rate):
         countries_with_currency = Country.select().where(Country.currency_code == currency_code)
 
         for country in countries_with_currency:

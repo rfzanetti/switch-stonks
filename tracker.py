@@ -3,20 +3,35 @@ from datetime import datetime
 from db import DbUtil
 from extractor import ListingExtractor
 from model import Game, Listing
+from currency import CurrencyConverter
 
 
 class ListingTracker():
 
-    def __init__(self, db):
-        self.db_util = DbUtil(db)
+    def __init__(self, db_name):
+        self.db_util = DbUtil(db_name)
 
         self.countries = self.db_util.list_countries()
         self.extractor = ListingExtractor()
         self.existing_games = self.db_util.list_games()
 
     def save_listings(self):
+        self.update_currency_values()
+
         for country in self.countries:
             self.save_country_listings(country)
+
+    def update_currency_values(self):
+
+        currency_codes = self.db_util.list_currency_codes()
+        converter = CurrencyConverter()
+
+        for code in currency_codes:
+            try:
+                new_usd_rate = converter.get_conversion_rate(currency_code=code, base='USD')
+                self.db_util.update_currency_usd_conversion_rate(code, new_usd_rate)
+            except KeyError as missing_key:
+                print(f"Could not update conversion rate for currency {missing_key}")
 
     def save_country_listings(self, country):
 
