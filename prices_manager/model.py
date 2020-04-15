@@ -1,6 +1,6 @@
 from peewee import Model, SqliteDatabase, CharField, DateField, FloatField, ForeignKeyField
 
-db = SqliteDatabase('switch_stonks.db')
+db = SqliteDatabase("../switch_stonks.db")
 
 
 class Game(Model):
