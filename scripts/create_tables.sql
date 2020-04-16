@@ -13,6 +13,7 @@ CREATE TABLE game (
 );
 
 CREATE TABLE listing (
+    id INTEGER PRIMARY KEY,
     listing_value REAL, 
     listing_date DATE,
     game_id INTEGER NOT NULL,
