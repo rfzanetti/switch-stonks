@@ -14,8 +14,9 @@ CREATE TABLE game (
 
 CREATE TABLE listing (
     id INTEGER PRIMARY KEY,
-    listing_value REAL, 
-    listing_date DATE,
+    original_value REAL, 
+    usd_value REAL, 
+    date DATE,
     game_id INTEGER NOT NULL,
     country_id INTEGER NOT NULL,
     FOREIGN KEY (game_id) REFERENCES game (id),

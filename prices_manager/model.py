@@ -22,8 +22,9 @@ class Country(Model):
 
 
 class Listing(Model):
-    listing_value = FloatField()
-    listing_date = DateField()
+    original_value = FloatField()
+    usd_value = FloatField()
+    date = DateField()
     game = ForeignKeyField(Game, backref='listing')
     country = ForeignKeyField(Country, backref='listing')
 

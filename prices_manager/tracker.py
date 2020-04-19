@@ -44,17 +44,24 @@ class ListingTracker():
             if not game:
                 game = self.create_new_game(new_listing["game_title"])
 
-            listing = Listing(listing_value=new_listing["price"],
-                              listing_date=datetime.today().strftime('%Y-%m-%d'),
+            listing = Listing(original_value=new_listing["price"],
+                              usd_value=self.calculate_usd_value(new_listing["price"], country),
+                              date=self.today_date(),
                               game_id=game,
                               country_id=country)
 
-            self.db_util.store_listing(listing)
+            self.db_util.save(listing)
+
+    def calculate_usd_value(self, original_value, country):
+        return original_value / country.currency_usd_conversion
+
+    def today_date(self):
+        return datetime.today().strftime('%Y-%m-%d')
 
     def create_new_game(self, game_title):
         game = Game(title=game_title)
 
-        game.id = self.db_util.store_game(game)
+        game.id = self.db_util.save(game)
         self.existing_games.append(game)
 
         return game

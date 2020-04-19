@@ -16,11 +16,8 @@ class DbUtil():
     def list_games(self):
         return [game for game in Game.select()]
 
-    def store_game(self, game):
-        return game.save()
-
-    def store_listing(self, listing):
-        listing.save()
+    def save(self, obj):
+        return obj.save()
 
     def update_currency_usd_conversion_rate(self, currency_code, new_rate):
         countries_with_currency = Country.select().where(Country.currency_code == currency_code)
