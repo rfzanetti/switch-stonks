@@ -14,14 +14,18 @@ class Country(models.Model):
 
 class Game(models.Model):
     title = models.CharField(max_length=80)
+    min_price = models.FloatField(blank=True, null=True)
+    min_price_country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
+    last_updated = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'game'
 
 
 class Listing(models.Model):
-    listing_value = models.FloatField(blank=True, null=True)
-    listing_date = models.DateField(blank=True, null=True)
+    original_value = models.FloatField(blank=True, null=True)
+    usd_value = models.FloatField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
     game = models.ForeignKey(Game, models.DO_NOTHING)
     country = models.ForeignKey(Country, models.DO_NOTHING)
 

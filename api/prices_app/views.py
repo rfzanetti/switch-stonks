@@ -1,26 +1,12 @@
-from rest_framework import viewsets
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, filters
 
-from prices_app.models import Country, Game, Listing
-from prices_app.serializers import CountrySerializer, GameSerializer, ListingSerializer
-
-
-class CountryViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all().order_by('name')
-    serializer_class = CountrySerializer
-
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ['name']
+from prices_app.models import Game
+from prices_app.serializers import GameSerializer
 
 
-class GameViewSet(viewsets.ModelViewSet):
+class GameViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Game.objects.all().order_by('title')
     serializer_class = GameSerializer
 
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = [filters.SearchFilter]
     filter_fields = ['title']
-
-
-class ListingViewSet(viewsets.ModelViewSet):
-    queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
