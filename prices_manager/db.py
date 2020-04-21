@@ -20,8 +20,6 @@ class DbUtil():
         return obj.save()
 
     def update_currency_usd_conversion_rate(self, currency_code, new_rate):
-        countries_with_currency = Country.select().where(Country.currency_code == currency_code)
-
-        for country in countries_with_currency:
-            country.currency_usd_conversion = new_rate
-            country.save()
+        update_query = Country.update(currency_usd_conversion=new_rate).where(
+            Country.currency_code == currency_code)
+        update_query.execute()

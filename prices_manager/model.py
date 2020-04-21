@@ -3,19 +3,22 @@ from peewee import Model, SqliteDatabase, CharField, DateField, FloatField, Fore
 db = SqliteDatabase("../switch_stonks.db")
 
 
-class Game(Model):
-    title = CharField()
-
-    class Meta:
-        database = db
-
-
 class Country(Model):
     name = CharField()
     eshop_url = CharField()
     currency_code = CharField()
     currency_symbol = CharField()
     currency_usd_conversion = FloatField()
+
+    class Meta:
+        database = db
+
+
+class Game(Model):
+    title = CharField()
+    min_price = FloatField()
+    min_price_country_id = ForeignKeyField(Country, backref='game')
+    last_updated = DateField()
 
     class Meta:
         database = db

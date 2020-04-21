@@ -9,7 +9,11 @@ CREATE TABLE country (
                       
 CREATE TABLE game (
     id INTEGER PRIMARY KEY,
-    title VARCHAR(100) NOT NULL
+    title VARCHAR(100) NOT NULL,
+    min_price REAL,
+    min_price_country_id INTEGER,
+    last_updated DATE,
+    FOREIGN KEY (min_price_country_id) REFERENCES country (id)
 );
 
 CREATE TABLE listing (
