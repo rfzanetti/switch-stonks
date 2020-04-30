@@ -1,10 +1,8 @@
-from django.conf.urls import url, include
-from rest_framework import routers
-from prices_app.views import GameViewSet
+from django.urls import path
+from prices_app import views
 
-router = routers.DefaultRouter()
-router.register(r'game', GameViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    path('games/<title>/', views.list_game_by_title),
+    path('history/<int:pk>/', views.game_listing_history),
 ]
