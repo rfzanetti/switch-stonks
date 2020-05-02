@@ -3,14 +3,14 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from prices_app.models import Game, Listing
-from prices_app.serializers import GameSerializer, ListingSerializer
+from prices_app.serializers import GamePreviewSerializer, ListingSerializer
 
 
 @api_view(['GET'])
 def list_game_by_title(request, title):
     games = Game.objects.filter(title__contains=title)
 
-    serializer = GameSerializer(games, many=True)
+    serializer = GamePreviewSerializer(games, many=True)
 
     return Response(serializer.data)
 
