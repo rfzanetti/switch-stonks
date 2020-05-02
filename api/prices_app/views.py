@@ -1,5 +1,4 @@
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from prices_app.models import Game, Listing
@@ -28,8 +27,8 @@ def game_listing_history(request, pk):
 
     listings = Listing.objects.raw(query)
 
-    if listings:
-        serializer = ListingSerializer(listings, many=True)
-        return Response(serializer.data)
-    else:
-        raise NotFound(code=404)
+    if not listings:
+        return Response(status=404)
+
+    serializer = ListingSerializer(listings, many=True)
+    return Response(serializer.data)
