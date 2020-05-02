@@ -7,9 +7,13 @@ from prices_app.serializers import GamePreviewSerializer, ListingSerializer
 
 
 @api_view(['GET'])
-def list_game_by_title(request, title):
-    games = Game.objects.filter(title__contains=title)
+def list_game_by_title(request):
+    title = request.query_params.get('title')
 
+    if not title:
+        return Response(status=400)
+
+    games = Game.objects.filter(title__contains=title)
     serializer = GamePreviewSerializer(games, many=True)
 
     return Response(serializer.data)
