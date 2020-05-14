@@ -17,5 +17,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('prices_app.urls')),
-    path('', include('users_app.urls'))
+    path('', include('users_app.urls')),
+    path('', include('wishlist_app.urls'))
 ]
