@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'prices_app',
-    'users_app',
     'wishlist_app',
 ]
 
