@@ -3,39 +3,39 @@ from django.db.utils import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from wishlist_app.models import Wishlist
 from prices_app.models import Game
 from prices_app.serializers import GamePreviewSerializer
 
 
-@api_view(['POST'])
-def add_game_to_user_wishlist(request):
-    if not request.user.is_authenticated:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+class WishlistView(APIView):
 
-    user = request.user.id
-    game = request.POST["game"]
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    try:
-        new_wishlist_entry = Wishlist(user_id=user, game_id=game)
-        new_wishlist_entry.save()
-    except IntegrityError:
-        return Response(f"Invalid game: {game}", status=status.HTTP_404_NOT_FOUND)
+        user = request.user.id
 
-    return Response(status=status.HTTP_200_OK)
+        game_ids_in_user_wishlist = Wishlist.objects.filter(user=user).values('game')
+        games = Game.objects.filter(pk__in=game_ids_in_user_wishlist)
 
+        serializer = GamePreviewSerializer(games, many=True)
 
-@api_view(['GET'])
-def list_user_wishlist_games(request):
-    if not request.user.is_authenticated:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.data)
 
-    user = request.user.id
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    game_ids_in_user_wishlist = Wishlist.objects.filter(user=user).values('game')
-    games = Game.objects.filter(pk__in=game_ids_in_user_wishlist)
+        user = request.user.id
+        game = request.POST["game"]
 
-    serializer = GamePreviewSerializer(games, many=True)
+        try:
+            new_wishlist_entry = Wishlist(user_id=user, game_id=game)
+            new_wishlist_entry.save()
+        except IntegrityError:
+            return Response(f"Invalid game: {game}", status=status.HTTP_404_NOT_FOUND)
 
-    return Response(serializer.data)
+        return Response(status=status.HTTP_200_OK)
