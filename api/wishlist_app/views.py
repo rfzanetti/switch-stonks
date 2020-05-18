@@ -1,4 +1,6 @@
 from django.db.utils import IntegrityError
+
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -10,7 +12,7 @@ from prices_app.serializers import GamePreviewSerializer
 @api_view(['POST'])
 def add_game_to_user_wishlist(request):
     if not request.user.is_authenticated:
-        return Response(status=401)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     user = request.user.id
     game = request.POST["game"]
@@ -19,15 +21,15 @@ def add_game_to_user_wishlist(request):
         new_wishlist_entry = Wishlist(user_id=user, game_id=game)
         new_wishlist_entry.save()
     except IntegrityError:
-        return Response(f"Invalid game: {game}", status=404)
+        return Response(f"Invalid game: {game}", status=status.HTTP_404_NOT_FOUND)
 
-    return Response(status=200)
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def list_user_wishlist_games(request):
     if not request.user.is_authenticated:
-        return Response(status=401)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     user = request.user.id
 
