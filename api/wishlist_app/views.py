@@ -1,7 +1,7 @@
+from django.http import QueryDict
 from django.db.utils import IntegrityError
 
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,4 +38,19 @@ class WishlistView(APIView):
         except IntegrityError:
             return Response(f"Invalid game: {game}", status=status.HTTP_404_NOT_FOUND)
 
+        return Response(status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        user = request.user.id
+        game = QueryDict(request.body).get('game')
+
+        existing_game = Wishlist.objects.filter(user=user, game=game)
+
+        if not existing_game:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        existing_game.delete()
         return Response(status=status.HTTP_200_OK)
