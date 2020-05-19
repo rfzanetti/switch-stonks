@@ -1,8 +1,8 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
+from rest_framework.views import status
 
 from prices_app.models import Country, Game, Listing
-from rest_framework.views import status
 
 
 class ViewTests(TestCase):
