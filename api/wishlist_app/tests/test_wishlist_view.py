@@ -23,7 +23,7 @@ class ViewTests(TestCase):
                                    last_updated=last_updated)
 
     def setUp(self):
-        User.objects.create_user('rafael', 'pass')
+        User.objects.create_user('some_user', 'some_password')
 
         brazil = Country.objects.create(id=1,
                                         name="Brazil",
@@ -116,44 +116,6 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_delete_wishlist_game_returns_status_200(self):
-        user = User.objects.get(id=1)
-        game = Game.objects.get(id=1)
-
-        Wishlist.save(Wishlist(user=user, game=game))
-
-        request = self.request_factory.delete('/wishlist/1/')
-        force_authenticate(request, user=user)
-
-        response = WishlistView.as_view()(request)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_wishlist_entry_is_deleted_after_user_delete(self):
-        user = User.objects.get(id=1)
-        game = Game.objects.get(id=1)
-
-        Wishlist.save(Wishlist(user=user, game=game))
-
-        request = self.request_factory.delete('/wishlist/1/')
-        force_authenticate(request, user=user)
-
-        WishlistView.as_view()(request)
-
-        user_wishlist = Wishlist.objects.filter(user=user)
-
-        self.assertEqual(user_wishlist, [])
-
-    def test_delete_wishlist_with_non_existing_game_returns_status_404(self):
-        user = User.objects.get(id=1)
-
-        request = self.request_factory.delete('/wishlist/9999/')
-        force_authenticate(request, user=user)
-
-        response = WishlistView.as_view()(request)
-
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
     def test_get_request_with_unauthorized_user_returns_status_401(self):
         request = self.request_factory.get('/wishlist/')
         response = WishlistView.as_view()(request)
@@ -162,12 +124,6 @@ class ViewTests(TestCase):
 
     def test_post_request_with_unauthorized_user_returns_status_401(self):
         request = self.request_factory.post('/wishlist/', {})
-        response = WishlistView.as_view()(request)
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_delete_request_with_unauthorized_user_returns_status_401(self):
-        request = self.request_factory.delete('/wishlist/1/')
         response = WishlistView.as_view()(request)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
