@@ -1,0 +1,13 @@
+[
+    {
+        "model": "prices_app.country",
+        "pk": 1,
+        "fields": {
+            "name": "Brazil",
+            "eshop_url": "https://store.nintendo.com.br/",
+            "currency_code": "BRL",
+            "currency_symbol": "R$",
+            "currency_usd_conversion": 5.530203576341128
+        }
+    }
+]

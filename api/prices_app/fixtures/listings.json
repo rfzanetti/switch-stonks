@@ -1,0 +1,46 @@
+[
+{
+    "model": "prices_app.listing",
+    "pk": 1,
+    "fields": {
+        "original_value": 167.19,
+        "usd_value": 32.817191798110315,
+        "date": "2020-04-11",
+        "game": 1,
+        "country": 1
+    }
+},
+{
+    "model": "prices_app.listing",
+    "pk": 2,
+    "fields": {
+        "original_value": 250.79,
+        "usd_value": 49.2267691312165,
+        "date": "2020-04-11",
+        "game": 2,
+        "country": 1
+    }
+},
+{
+    "model": "prices_app.listing",
+    "pk": 520,
+    "fields": {
+        "original_value": 167.19,
+        "usd_value": 32.80887785166605,
+        "date": "2020-04-12",
+        "game": 1,
+        "country": 1
+    }
+},
+{
+    "model": "prices_app.listing",
+    "pk": 521,
+    "fields": {
+        "original_value": 250.79,
+        "usd_value": 49.214297962912426,
+        "date": "2020-04-12",
+        "game": 2,
+        "country": 1
+    }
+}
+]
