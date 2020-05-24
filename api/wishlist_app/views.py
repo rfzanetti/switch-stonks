@@ -30,7 +30,11 @@ class WishlistView(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         user = request.user.id
-        game = request.POST["game"]
+
+        try:
+            game = request.POST["game"]
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:
             new_wishlist_entry = Wishlist(user_id=user, game_id=game)
