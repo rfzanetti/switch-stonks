@@ -44,17 +44,19 @@ class WishlistView(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
-    def delete(self, request):
+
+class WishlistDetailView(APIView):
+
+    def delete(self, request, pk):
         if not request.user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         user = request.user.id
-        game = QueryDict(request.body).get('game')
+        existing_wishlist_entry = Wishlist.objects.filter(user=user, game=pk)
 
-        existing_game = Wishlist.objects.filter(user=user, game=game)
-
-        if not existing_game:
+        if not existing_wishlist_entry:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        existing_game.delete()
+        existing_wishlist_entry.delete()
+
         return Response(status=status.HTTP_200_OK)
