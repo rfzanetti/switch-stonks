@@ -13,27 +13,7 @@ from prices_app.serializers import GamePreviewSerializer
 class ViewTests(TestCase):
 
     request_factory = APIRequestFactory()
-
-    @staticmethod
-    def create_game(id, title, min_price, min_price_country, last_updated):
-        return Game.objects.create(id=id,
-                                   title=title,
-                                   min_price=min_price,
-                                   min_price_country=min_price_country,
-                                   last_updated=last_updated)
-
-    def setUp(self):
-        User.objects.create_user('some_user', 'some_password')
-
-        brazil = Country.objects.create(id=1,
-                                        name="Brazil",
-                                        eshop_url="https://store.nintendo.com.br/",
-                                        currency_code="BRL",
-                                        currency_symbol="R$",
-                                        currency_usd_conversion=4.25)
-
-        self.create_game(1, "Yooka-Laylee", 8.89, brazil, "2020-05-03")
-        self.create_game(2, "Stardew Valley", 2.43, brazil, "2020-05-03")
+    fixtures = ["user.json", "country.json", "game.json"]
 
     def test_get_user_wishlist_returns_status_200(self):
         user = User.objects.get(id=1)

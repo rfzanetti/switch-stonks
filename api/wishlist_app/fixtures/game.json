@@ -1,0 +1,22 @@
+[
+    {
+        "model": "prices_app.game",
+        "pk": 1,
+        "fields": {
+            "title": "Moving Out",
+            "min_price": 5.135258178506119,
+            "min_price_country": 1,
+            "last_updated": "2020-05-23"
+        }
+    },
+    {
+        "model": "prices_app.game",
+        "pk": 2,
+        "fields": {
+            "title": "Xenoblade Chronicles\u2122: Definitive Edition",
+            "min_price": 45.349139850890786,
+            "min_price_country": 1,
+            "last_updated": "2020-05-23"
+        }
+    }
+]
