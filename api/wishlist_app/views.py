@@ -36,11 +36,11 @@ class WishlistView(APIView):
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        try:
+        if Game.objects.filter(id=game).exists():
             new_wishlist_entry = Wishlist(user_id=user, game_id=game)
             new_wishlist_entry.save()
-        except IntegrityError:
-            return Response(f"Invalid game: {game}", status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(f"Could not find game {game}", status=status.HTTP_404_NOT_FOUND)
 
         return Response(status=status.HTTP_200_OK)
 
