@@ -1,42 +1,21 @@
 import requests
+from bs4 import BeautifulSoup
 
 
 class ListingExtractor():
 
     def extract_listings(self, eshop_url):
-        eshop_content = requests.get(eshop_url).text
-        listing_sections = self.break_content_into_sections(eshop_content)
+        page = requests.get(eshop_url)
+        soup = BeautifulSoup(page.content, 'html.parser')
 
-        return [self.extract_listing_from_section(section) for section in listing_sections]
+        game_tags = soup.find_all(class_="category-product-item")
 
-    def extract_listing_from_section(self, section):
-        game = self.get_value_by_key(section, "alt")
-        price = float(self.get_value_by_key(section, 'data-price-amount'))
+        return [self.parse_game_tag(game_tag) for game_tag in game_tags]
 
-        return {"game_title": game, "price": price}
+    def parse_game_tag(self, game_tag):
+        price = game_tag.find(class_='price-wrapper').attrs["data-price-amount"]
+        title = game_tag.find(class_='category-product-item-title-link').get_text().strip()
+        link = game_tag.find("a").attrs["href"]
+        image_link = game_tag.find("img").attrs["src"]
 
-    def break_content_into_sections(self, content):
-        sections = list()
-
-        divider = '<div class="category-product-item">'
-
-        first_idx = content.find(divider)
-        next_idx = content[first_idx + 1:].find(divider) + first_idx
-
-        if next_idx == 0:
-            sections.append(content[first_idx:])
-            return sections
-
-        sections.append(content[first_idx:next_idx])
-
-        sections[1:1] = self.break_content_into_sections(content[next_idx:])
-
-        return sections
-
-    def get_value_by_key(self, text, key):
-        # TODO: Use regexp
-
-        key_idx = text.find(key)
-        end_idx = text[key_idx + len(key) + 2:].find('"') + key_idx
-
-        return text[key_idx + len(key) + 2: end_idx + len(key) + 2]
+        return {"game_title": title, "price": float(price), "link": link, "image_link": image_link}
